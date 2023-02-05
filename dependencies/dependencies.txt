@@ -1,0 +1,2 @@
+GameStatus: https://www.hiveworkshop.com/threads/gamestatus-replay-detection.293181/
+- Extract the GameStatus script from the map.
