@@ -1,0 +1,462 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+
+//  Regular button background template.
+Frame "BACKDROP" "CustomRaceBackdropTemplate" {
+    DecorateFileNames,  
+    BackdropBackground          "EscMenuEditBoxBackground",
+    BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize          0.012,
+    BackdropBackgroundSize      0.256,
+    BackdropBackgroundInsets    0.02 0.02 0.02 0.02,
+    BackdropEdgeFile            "EscMenuEditBoxBorder",
+    BackdropBlendAll,
+}
+
+//  Pushed button background template.
+Frame "BACKDROP" "CustomRaceBackdropPushedTemplate" {
+    DecorateFileNames,
+    BackdropTileBackground,
+    BackdropBackground  "EscMenuButtonDisabledBackground",
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize  0.0125,
+    BackdropBackgroundSize  0.256,
+    BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+    BackdropEdgeFile  "EscMenuButtonDisabledBorder",
+}
+
+Frame "TEXT" "CustomRaceTextTemplate" {
+    DecorateFileNames,
+    FrameFont "EscMenuTextFont", 0.018, "",
+    FontJustificationOffset 0.02 -0.015,
+    FontJustificationH JUSTIFYLEFT,
+    FontJustificationV JUSTIFYTOP,
+    FontColor 1.0 0.75 0.0 1.0,
+}
+
+Frame "BACKDROP" "CustomRaceSimpleBackdropTemplate" {
+    DecorateFileNames, //Look-Up Names in some String table (for example gameinterface)
+    BackdropTileBackground, //Tile mode enabled
+    BackdropBackground  "ToolTipBackground", //BackgroundFile
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize  0.000, //higher numbers make the corners bigger.
+    BackdropBackgroundInsets 0.0 0.0 0.0 0.0, //makes the background smaller, from the outside.
+    BackdropEdgeFile  "ToolTipBorder", //the border File
+    BackdropBlendAll,
+}
+
+//  A somewhat generic button that can be used quite
+//  flexibly.
+Frame "GLUETEXTBUTTON" "CustomRaceButton" {
+    Width 0.04,
+    Height 0.04,
+    DecorateFileNames,
+
+    ControlBackdrop "CustomRaceButtonBG",
+    Frame "BACKDROP" "CustomRaceButtonBG" INHERITS "CustomRaceBackdropTemplate" {
+        BackdropBackgroundInsets    0.0044 0.0044 0.0056 0.0056,
+    }
+
+    ControlPushedBackdrop "CustomRaceButtonPushedBG",
+    Frame "BACKDROP" "CustomRaceButtonPushedBG" INHERITS "CustomRaceBackdropPushedTemplate" {
+        SetPoint CENTER, "CustomRaceButton", CENTER, -0.012, -0.012,
+    }
+
+    ControlDisabledBackdrop "CustomRaceButtonDBG",
+    Frame "BACKDROP" "CustomRaceButtonDBG" INHERITS "CustomRaceBackdropTemplate" {
+        SetPoint CENTER, "CustomRaceButton", CENTER, 0.0, 0.0,
+        BackdropBackgroundInsets    0.0044 0.0044 0.0056 0.0056,
+        DecorateFileNames,
+        BackdropBackground "EscMenuButtonDisabledBackground",
+        BackdropCornerFile "EscMenuButtonDisabledBorder",
+    }
+
+    ControlDisabledPushedBackdrop "CustomRaceButtonPushedDBG",
+    Frame "BACKDROP" "CustomRaceButtonDBG" INHERITS "CustomRaceBackdropPushedTemplate" {
+        SetPoint CENTER, "CustomRaceButton", CENTER, -0.012, -0.012,
+        DecorateFileNames,
+        BackdropBackground "EscMenuButtonDisabledPushedBackground",
+        BackdropCornerFile "EscMenuButtonDisabledBorder",
+    }
+}
+
+//  The main frame itself. Only 1 of these should
+//  exist at any given time.
+Frame "FRAME" "CustomRaceMainFrame" {
+    Width  0.52,
+    Height 0.48,
+
+    //  The background of the mainframe
+    Frame "BACKDROP" "CustomRaceMainBackdrop" {
+        SetAllPoints,
+        DecorateFileNames,
+        BackdropTileBackground,
+        BackdropBackground          "EscMenuBackground",
+        BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize          0.048,
+        BackdropBackgroundSize      0.256,
+        BackdropBackgroundInsets    0.02 0.02 0.02 0.02,
+        BackdropEdgeFile            "EscMenuBorder",
+		BackdropBlendAll,
+    }
+
+    //  The text area situated at the top-right area of the main frame
+    Frame "TEXTAREA" "CustomRaceFactionDescArea" INHERITS "EscMenuTextAreaTemplate" {
+        DecorateFileNames,
+        TextAreaLineHeight 0.015,
+        TextAreaInset 0.015,
+        FrameFont "MasterFont", 0.0125, "",
+        Width  0.22,
+        Height 0.18,
+        SetPoint TOPRIGHT, "CustomRaceMainFrame", TOPRIGHT, -0.02, -0.02,
+
+        TextAreaScrollBar "CustomRaceFactionDescScrollBar",
+        Frame "SCROLLBAR" "CustomRaceFactionDescScrollBar" INHERITS WITHCHILDREN "EscMenuScrollBarTemplate" {
+        }
+
+        Frame "BACKDROP" "CustomRaceFactionDescBackdrop" INHERITS "EscMenuControlBackdropTemplate" {
+            SetAllPoints,
+        }
+    }
+
+    //  The text frame situated at the topmost left area
+    Frame "TEXT" "CustomRaceFactionName" {
+        DecorateFileNames,
+        UseActiveContext,
+        FrameFont "EscMenuTextFont", 0.02,"",
+        FontColor 1.0 0.75 0.0 1.0,
+        FontHighlightColor 1.0 1.0 1.0 1.0,
+        FontDisabledColor 0.5 0.5 0.5 0.5,
+        FontJustificationH JUSTIFYLEFT,
+	    FontJustificationOffset 0.012 -0.010,
+        Width    0.18,
+        Height   0.03,
+        SetPoint TOPLEFT, "CustomRaceMainFrame", TOPLEFT, 0.02, -0.02,
+        Text "Faction Name",
+    }
+
+        //  The frame that contains the background that displays the faction image.
+    Frame "FRAME" "CustomRaceFactionDisplayMain" {
+        Width  0.18,
+        Height 0.18,
+        SetPoint TOPLEFT, "CustomRaceMainFrame", TOPLEFT, 0.02, -0.06,
+
+        Frame "BACKDROP" "CustomRaceFactionDisplay" {
+            SetAllPoints,
+            DecorateFileNames,
+            BackdropTileBackground,
+            BackdropBackground          "EscMenuEditBoxBackground",
+            BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+            BackdropCornerSize          0.012,
+            BackdropBackgroundSize      0.256,
+            BackdropBackgroundInsets    0.008 0.008 0.008 0.008,
+            BackdropEdgeFile            "EscMenuEditBoxBorder",
+            BackdropBlendAll,
+
+            Frame "BACKDROP" "CustomRaceFactionDisplayIcon" {
+                SetAllPoints,
+                BackdropBackgroundInsets   0.004 0.004 0.004 0.004,
+            }
+        }
+    }
+
+//  The gluetextbutton that confirms the selection the player made.
+    Frame "GLUETEXTBUTTON" "CustomRaceFactionConfirmButton" {
+        Width   0.07,
+        Height  0.04,
+        DecorateFileNames,
+        UseActiveContext,
+        SetPoint BOTTOMLEFT, "CustomRaceFactionDisplayMain", BOTTOMRIGHT, 0.006, 0.00,
+
+        ControlBackdrop "CustomRaceFactionConfirmButtonBackdrop",
+        Frame "BACKDROP" "CustomRaceFactionConfirmButtonBackdrop" INHERITS "CustomRaceBackdropTemplate" {
+        }
+
+        ControlPushedBackdrop "CustomRaceFactionConfirmButtonPushBackdrop",
+        Frame "BACKDROP" "CustomRaceFactionConfirmButtonPushBackdrop" INHERITS "CustomRaceBackdropPushedTemplate" {
+            SetPoint LEFT, "CustomRaceFactionConfirmButton", LEFT, -0.01, -0.01,
+        }
+
+        ControlDisabledBackdrop "CustomRaceFactionConfirmButtonDBackdrop",
+        Frame "BACKDROP" "CustomRaceFactionConfirmButtonDBackdrop" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+        }
+
+        ControlDisabledPushedBackdrop "CustomRaceFactionConfirmButtonPushedDBackdrop",
+        Frame "BACKDROP" "CustomRaceFactionConfirmButtonPushedDBackdrop" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+        }
+
+        ButtonPushedTextOffset -0.001 -0.001,
+        ButtonText "CustomRaceFactionConfirmButtonText",
+        Frame "TEXT" "CustomRaceFactionConfirmButtonText" {
+            FrameFont "EscMenuTextFont", 0.020, "",
+            FontJustificationOffset 0.0 0.0,
+            FontJustificationH JUSTIFYCENTER,
+            FontJustificationV JUSTIFYMIDDLE,
+            FontDisabledColor 0.5 0.5 0.5 0.5,
+            FontFlags "FIXEDSIZE",
+            SetAllPoints,
+            Text "Confirm!",
+        }
+    }
+
+    //  The container frame that holds the choice buttons.
+    Frame "BACKDROP" "CustomRaceFactionChoiceMain" INHERITS "EscMenuControlBackdropTemplate" {
+        Width  0.24,
+        Height 0.16,
+        SetPoint TOPLEFT, "CustomRaceFactionDisplayMain", BOTTOMLEFT, 0.00, -0.01,
+    }
+
+    //  The adjacent scrollbar that dictates the current lineup
+    //  of faction choices for the user.
+    Frame "SLIDER" "CustomRaceFactionChoiceScrollbar" {
+        Height 0.14,
+        Width 0.012,
+        SliderLayoutVertical,
+        SliderMaxValue 1,
+        SliderMinValue 0,
+        SliderInitialValue 1,
+        SliderStepSize 1,
+        SetPoint LEFT, "CustomRaceFactionChoiceMain", RIGHT, -0.0054, 0.00,
+
+        ControlBackdrop "CustomRaceFactionChoiceScrollbarBackdrop",
+        Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarBackdrop" {
+            DecorateFileNames,
+            BackdropTileBackground,
+            BackdropBackground  "EscMenuSliderBackground",
+            BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+            BackdropCornerSize  0.006,
+            BackdropBackgroundSize 0.006,
+            BackdropBackgroundInsets 0.0025 0.0025 0.0025 0.0025,
+            BackdropEdgeFile  "EscMenuSliderBorder",
+            BackdropBlendAll,
+        }
+
+        // ScrollBarIncButtonFrame "CustomRaceFactionChoiceScrollbarIncButton",
+        Frame "BUTTON" "CustomRaceFactionChoiceScrollbarIncButton" {
+            Width 0.012,
+            Height 0.012,
+            SetPoint BOTTOM, "CustomRaceFactionChoiceScrollbar", TOP, 0.00, 0.00,
+            ControlBackdrop "CustomRaceFactionChoiceScrollbarIncButtonBackdrop",
+            Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarIncButtonBackdrop" {
+                BackdropBackground  "UI\Widgets\Glues\SinglePlayerSkirmish-ScrollBarUpButton.blp",
+                BackdropCornerSize  0.0016,
+                BackdropBackgroundSize 0.016,
+                BackdropBackgroundInsets 0.0012 0.0012 0.0012 0.0012,
+                BackdropBlendAll,
+            }
+
+            ControlPushedBackdrop "CustomRaceFactionChoiceScrollbarIncButtonPushedBackdrop",
+            Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarIncButtonPushedBackdrop" {
+                SetPoint CENTER, "CustomRaceFactionChoiceScrollbarIncButton", CENTER, -0.0004, -0.0004,
+                BackdropBackground  "UI\Widgets\Glues\SinglePlayerSkirmish-ScrollBarUpButton.blp",
+                BackdropCornerSize  0.0016,
+                BackdropBackgroundSize 0.016,
+                BackdropBackgroundInsets 0.0012 0.0012 0.0012 0.0012,
+                BackdropBlendAll,
+            }
+        }
+
+        // ScrollBarDecButtonFrame "CustomRaceFactionChoiceScrollbarDecButton",
+        Frame "BUTTON" "CustomRaceFactionChoiceScrollbarDecButton" {
+            Width 0.012,
+            Height 0.012,
+            SetPoint TOP, "CustomRaceFactionChoiceScrollbar", BOTTOM, 0.00, -0.00,
+            ControlBackdrop "CustomRaceFactionChoiceScrollbarDecButtonBackdrop",
+            Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarDecButtonBackdrop" {
+                BackdropBackground  "UI\Widgets\Glues\SinglePlayerSkirmish-ScrollBarDownButton.blp",
+                BackdropCornerSize  0.0016,
+                BackdropBackgroundSize 0.016,
+                BackdropBackgroundInsets 0.0012 0.0012 0.0012 0.0012,
+                BackdropBlendAll,
+            }
+
+            ControlPushedBackdrop "CustomRaceFactionChoiceScrollbarDecButtonPushedBackdrop",
+            Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarDecButtonPushedBackdrop" {
+                SetPoint CENTER, "CustomRaceFactionChoiceScrollbarDecButton", CENTER, -0.0004, -0.0004,
+                BackdropBackground  "UI\Widgets\Glues\SinglePlayerSkirmish-ScrollBarDownButton.blp",
+                BackdropCornerSize  0.0016,
+                BackdropBackgroundSize 0.016,
+                BackdropBackgroundInsets 0.0012 0.0012 0.0012 0.0012,
+                BackdropBlendAll,
+            }
+        }
+
+        SliderThumbButtonFrame "CustomRaceFactionChoiceScrollbarThumb",
+        Frame "BUTTON" "CustomRaceFactionChoiceScrollbarThumb" {
+            Width 0.02,
+            Height 0.02,
+
+            ControlBackdrop "CustomRaceFactionChoiceScrollbarThumbBackdrop",
+            Frame "BACKDROP" "CustomRaceFactionChoiceScrollbarThumbBackdrop" {
+                DecorateFileNames,
+                BackdropBlendAll,
+                BackdropBackground  "EscMenuSliderThumbButton",
+            }
+        }
+    }
+
+    //  The main frame for the techtree list display.
+    Frame "BACKDROP" "CustomRaceFactionTechtreeBackdrop" {
+        Width  0.22,
+        Height 0.20,
+        SetPoint TOPRIGHT, "CustomRaceFactionDescArea", BOTTOMRIGHT, 0.00, -0.01,
+        DecorateFileNames,
+        BackdropBackground          "EscMenuEditBoxBackground",
+        BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize          0.012,
+        BackdropBackgroundSize      0.256,
+        BackdropBackgroundInsets    0.0025 0.0025 0.0025 0.0025,
+        BackdropEdgeFile            "EscMenuEditBoxBorder",
+		BackdropBlendAll,
+    }
+
+    //  The frame that holds the "bar" frame which updates
+    //  every 1/64 seconds for 15 seconds (counting down).
+    Frame "BACKDROP" "CustomRaceFactionUpdateMain" {
+        Width 0.48,
+        Height 0.035,
+        SetPoint BOTTOMLEFT, "CustomRaceMainFrame", BOTTOMLEFT, 0.02, 0.025,
+        DecorateFileNames,
+        BackdropBackground          "EscMenuEditBoxBackground",
+        BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+        BackdropCornerSize          0.012,
+        BackdropBackgroundSize      0.256,
+        BackdropBackgroundInsets    0.02 0.02 0.02 0.02,
+        BackdropEdgeFile            "EscMenuEditBoxBorder",
+		BackdropBlendAll,
+
+        Frame "BACKDROP" "CustomRaceFactionUpdateBar" {
+            Width  0.0,
+            Height 0.035,
+            SetPoint LEFT, "CustomRaceFactionUpdateMain", LEFT, 0.0, 0.0,
+            DecorateFileNames,
+            BackdropBackground          "ReplaceableTextures\\Teamcolor\\Teamcolor02.tga",
+            BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+            BackdropCornerSize          0.0,
+            BackdropBackgroundSize      0.032,
+            BackdropBackgroundInsets    0.004 0.004 0.004 0.004,
+            BackdropEdgeFile            "EscMenuEditBoxBorder",
+        }
+    }
+}
+
+Frame "GLUETEXTBUTTON" "CustomRaceFactionChoiceButton" {
+    Height 0.24,
+    Width 0.24,
+    DecorateFileNames,
+    ControlStyle "HIGHLIGHTONFOCUS|HIGHLIGHTONMOUSEOVER",
+
+    ControlBackdrop "CustomRaceFactionChoiceButtonActiveBackdrop",
+    Frame "BACKDROP" "CustomRaceFactionChoiceButtonActiveBackdrop" INHERITS "CustomRaceBackdropTemplate" {
+    }
+
+    ControlPushedBackdrop "CustomRaceFactionChoiceButtonBackdrop",
+    Frame "BACKDROP" "CustomRaceFactionChoiceButtonBackdrop" INHERITS "CustomRaceBackdropPushedTemplate" {
+    }
+
+    ControlMouseOverHighlight "CustomRaceFactionChoiceButtonHighlight",
+    Frame "HIGHLIGHT" "CustomRaceFactionChoiceButtonHighlight" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+    }
+
+    ControlFocusHighlight "CustomRaceFactionChoiceButtonFancyHighlight",
+    Frame "HIGHLIGHT" "CustomRaceFactionChoiceButtonFancyHighlight" {
+        HighlightType      "FILETEXTURE",
+        HighlightAlphaFile "UI\Glues\ScoreScreen\scorescreen-tab-hilight.blp",
+        HighlightAlphaMode "ADD",
+    }
+
+    ButtonText "CustomRaceFactionChoiceButtonText",
+    Frame "TEXT" "CustomRaceFactionChoiceButtonText" {
+        DecorateFileNames,
+        FrameFont "EscMenuTextFont", 0.0152, "",
+        SetPoint CENTER, "CustomRaceFactionChoiceButton", CENTER, -0.016, 0.00,
+        FontJustificationOffset -0.016 0.0,
+        FontJustificationH JUSTIFYCENTER,
+        FontJustificationV JUSTIFYMIDDLE,
+        FontColor 1.0 0.75 0.0 1.0,
+        Text "Factionless",
+    }
+}
+
+//  The icon frames used inside the techtree frame.
+Frame "GLUETEXTBUTTON" "CustomRaceFactionTechtreeIcon" {
+    Height 0.03,
+    Width 0.03,
+    DecorateFileNames,
+    ControlStyle "HIGHLIGHTONFOCUS|HIGHLIGHTONMOUSEOVER",
+
+    ControlBackdrop "CustomRaceFactionTechtreeIconActiveBackdrop",
+    Frame "BACKDROP" "CustomRaceFactionTechtreeIconActiveBackdrop" INHERITS "CustomRaceBackdropTemplate" {
+        BackdropCornerSize          0.006,
+        BackdropBackgroundInsets    0.001 0.001 0.001 0.001,
+    }
+
+    ControlPushedBackdrop "CustomRaceFactionTechtreeIconBackdrop",
+    Frame "BACKDROP" "CustomRaceFactionTechtreeIconBackdrop" INHERITS "CustomRaceBackdropPushedTemplate" {
+        BackdropCornerSize          0.006,
+        BackdropBackgroundInsets    0.001 0.001 0.001 0.001,
+    }
+
+    ControlMouseOverHighlight "CustomRaceFactionTechtreeIconHighlight",
+    Frame "HIGHLIGHT" "CustomRaceFactionTechtreeIconHighlight" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+    }
+
+    ControlFocusHighlight "CustomRaceFactionTechtreeIconFancyHighlight",
+    Frame "HIGHLIGHT" "CustomRaceFactionTechtreeIconFancyHighlight" {
+        HighlightType      "FILETEXTURE",
+        HighlightAlphaFile "UI\Glues\ScoreScreen\scorescreen-tab-hilight.blp",
+        HighlightAlphaMode "ADD",
+    }
+}
+
+//  The techtree chunks that handle the spacing of the techtrees.
+Frame "BACKDROP" "CustomRaceTechtreeChunk" {
+    DecorateFileNames,
+    BackdropBackground          "EscMenuEditBoxBackground",
+    BackdropCornerFlags         "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize          0.0,
+    BackdropBackgroundSize      0.256,
+    BackdropBackgroundInsets    0.005 0.005 0.005 0.005,
+    BackdropEdgeFile            "EscMenuEditBoxBorder",
+    BackdropBlendAll,
+
+    Frame "TEXT" "CustomRaceTechtreeChunkTitle" {
+        DecorateFileNames,
+        FrameFont "EscMenuTextFont", 0.0104, "",
+        FontJustificationH JUSTIFYLEFT,
+        FontJustificationV JUSTIFYMIDDLE,
+        FontJustificationOffset 0.008 -0.0034,
+        FontColor 1.0 0.75 0.0 1.0,
+        Text "Title Missing!",
+    }
+
+    Frame "BACKDROP" "CustomRaceTechtreeChunkHolder" INHERITS "CustomRaceBackdropTemplate" {
+        BackdropCornerSize          0.016,
+        BackdropBackgroundInsets    0.025 0.025 0.025 0.025,
+    }
+}
+
+Frame "BACKDROP" "CustomRaceTechtreeTooltip" INHERITS "CustomRaceBackdropTemplate" {
+    Width 0.20,
+    Height 0.26,
+    BackdropBackgroundInsets 0.002 0.002 0.002 0.002,
+    UseActiveContext,
+
+    Frame "TEXT" "CustomRaceTechtreeTooltipName" INHERITS "CustomRaceTextTemplate" {
+        Width 0.18,
+        Height 0.025,
+        SetPoint TOPLEFT, "CustomRaceTechtreeTooltip", TOPLEFT, 0.0, 0.0,
+        FontJustificationOffset 0.008 -0.015,
+        FrameFont "EscMenuTextFont", 0.012, "",
+        Text "Unit Name",
+    }
+
+    Frame "TEXT" "CustomRaceTechtreeTooltipNameExtended" INHERITS "CustomRaceTextTemplate" {
+        Width 0.18,
+        Height 0.235,
+        SetPoint TOPLEFT, "CustomRaceTechtreeTooltipName", BOTTOMLEFT, 0.0, 0.0,
+        FontJustificationOffset 0.008 -0.015,
+        FrameFont "EscMenuTextFont", 0.0104, "",
+        FontColor 1.0 1.0 1.0 1.0,
+        Text "Tooltip Missing!",
+    }
+}

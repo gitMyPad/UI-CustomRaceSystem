@@ -1,0 +1,2 @@
+UI\FrameDef\UI\EscMenuTemplates.fdf
+war3mapImported\CustomRaceFrame.fdf
