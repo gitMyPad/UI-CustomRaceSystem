@@ -159,7 +159,7 @@ private struct FrameInterpolation extends array
     readonly static player localPlayer  = null
     readonly static boolean isReplay    = false
 
-    private static constant integer  MAX_POWER_INDEX    = 3
+    private static constant integer  MAX_POWER_INDEX    = 4
     private static integer  instanceCount               = 0
     private static integer  array powersOf2
     private static integer  array tickMap
